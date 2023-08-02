@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import CharacterList from "./CharacterList";
-import Shake from "react-reveal/Shake";
+import LightSpeed from "react-reveal/LightSpeed";
+import Marquee from "react-fast-marquee";
 
 const MoviesDropDown = () => {
   const [loading, setLoading] = useState(false);
@@ -38,7 +39,7 @@ const MoviesDropDown = () => {
   return (
     <div className="w-full flex flex-col justify-center items-center p-10 gap-5">
       <h1 className="text-3xl text-blue-500 font-bold">
-        <Shake>Movies</Shake>
+        <LightSpeed left>Movies</LightSpeed>
       </h1>
       <div className="w-1/2">
         <Select options={movies} onChange={handleMovieSelect} isMulti />

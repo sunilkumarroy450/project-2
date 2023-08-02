@@ -15,23 +15,25 @@ const CharacterList = ({ data: selectedMovies }) => {
       setIsLoading(true);
 
       try {
-        const characterPromises = selectedMovies.map((movie) =>
-          fetch(`https://swapi.dev/api/films/?search=${movie}`).then(
-            (response) => response.json()
-          )
-        );
-
-        const movieData = await Promise.all(characterPromises);
-        const characters = movieData.flatMap((data) => {
-          const movie = data.results[0];
-          const characterUrls = movie.characters;
-          return characterUrls.map((url) =>
-            fetch(url).then((res) => res.json())
+        if (selectedMovies.length > 0) {
+          const characterPromises = selectedMovies.map((movie) =>
+            fetch(`https://swapi.dev/api/films/?search=${movie}`).then(
+              (response) => response.json()
+            )
           );
-        });
-        const charactersData = await Promise.all(characters);
 
-        setCharacters(charactersData);
+          const movieData = await Promise.all(characterPromises);
+          const characters = movieData.flatMap((data) => {
+            const movie = data.results[0];
+            const characterUrls = movie.characters;
+            return characterUrls.map((url) =>
+              fetch(url).then((res) => res.json())
+            );
+          });
+          const charactersData = await Promise.all(characters);
+
+          setCharacters(charactersData);
+        }
       } catch (error) {
         setCharacters([]);
         console.log(error);
@@ -56,7 +58,7 @@ const CharacterList = ({ data: selectedMovies }) => {
           <Zoom>Characters from selected movies</Zoom>
         </h2>
       )}
-      {selectedMovies.length > 0 && (
+      {selectedMovies.length >= 1 && (
         <ul className=" grid grid-cols-4 gap-2">
           {characters.map((character, index) => (
             <Pulse>
